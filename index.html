@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TYPE TO SURVIVE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+</style>
+</head>
+<body>
+
+ <div id="stage">
+<canvas id="noise"></canvas>
+<canvas id="glitch"></canvas>
+<div id="scanlines"></div>
+<div id="presence"></div>
+
+<div id="jumpscare">
+<div id="jumpscare-shape"></div>
+<div id="jumpscare-cyan"></div>
+<div id="jumpscare-red"></div>
+</div>
+
+<div id="ghost-overlay">
+<div id="ghost-shape"></div>
+</div>
+
+<button id="mute-btn" aria-label="toggle audio">◈</button>
+
+<div id="hud" class="hidden">
+<div id="rec-group">
+<div id="rec-dot"></div>
+<span id="timestamp">00:00</span>
+</div>
+<div id="signal-bar"></div id="signal-fill"></div></div>
+<div id="hud-right">
+<div id="diff-label"></div>
+<div id="score-display">0</div>
+</div>
+</div>
+
+<div id="word-timer-wrap" class="hidden">
+<div id="word-timer-fill"></div>
+</div>
+
+<div id="title-screen" class="screen">
+<div id="title-header">
+<div id="th-dot"></div>
+<span id="th-label">STANDBY</span>
+<div id="th-sig"></div id="th-sig-fill"></div></div>
+</div>
+<div class="glitch-title" data-text="TYPE TO SURVIVE">TYPE TO SURVIVE</div>
+<div class="subtitle">type before the signal dies</div>
+<div id="title-rule">
+<div id="title-rule-line"></div>
+<div id="title-rule-sig"><div id="title-rule-sig-fill"></div></div>
+</div>
+<div id="diff-picker">
+<span id="diff-label-txt">signal</span>
+<button class="diff-btn" data-diff="easy">EASY</button>
+<button class="diff-btn selected" data-diff="normal">NORMAL</button>
+<button class="diff-btn" data-diff="hard">HARD</button>
+</div>
+<button id="start-btn">TRANSMIT</button>
+<div id="title-atmos"></div>
+</div>
+
+<div id="game-screen" class="screen hidden">
+<div id="word-display" data-word=""></div>
+<div id="typed-display"></div>
+</div>
+
+<div id="gameover-screen" class="screen hidden">
+<div class="glitch-title" data-text="NO SIGNAL">NO SIGNAL</div>
+<div id="final-score"></div>
+<div style="display:flex;gap:14px">
+<button class="btn" id="menu-btn">MENU</button>
+</div>
+</div>
+
+<input id="hidden-input" type="text" autocomplete="off" autocorrect="off" spellcheck="false">
+</div>
+
+<style id="ca-style"></style>
+
+<script>
+</script>
+</body>
+</html>
