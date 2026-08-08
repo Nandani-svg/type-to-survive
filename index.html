@@ -76,6 +76,70 @@ inset: 0;
 pointer-events: none;
 z-index: 22;
 }
+
+#presence {
+position: fixed;
+bottom: 0;
+left: 50%;
+width: 340px;
+height: 180px;
+background: radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.97) 0%, transparent 70%);
+filter: blur(28px);
+pointer-events: none;
+z-index: 9;
+opacity: 0;
+transform-origin: bottom center;
+transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+#jumpscare {
+position: fixed;
+inset: 0;
+z-index: 200;
+display: none;
+overflow: hidden;
+background: #fff;
+}
+
+#jumpscare-shape {
+position: absolute;
+bottom: -10%;
+left: 50%;
+width: 200vw;
+height: 180vh;
+transform: translateX(-50%);
+transform-origin: bottom center;
+background: radial-gradient(ellipse at 50% 100%,
+rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 18%, rgba(20,0,0,0.7) 38%, transparent 62%);
+}
+
+#jumpscare-cyan{
+position: absolute;
+inset: 0;
+background: radial-gradient(ellipse at 52% 100%, rgba(0,230,255,0.18) 0%, transparent 55%);
+}
+
+#jumpscare-red{
+position: absolute;
+inset: 0;
+background: radial-gradient(ellipse at 48% 100%, rgba(255,0,0,0.15) 0%, transparent 55%);
+}
+
+
+#ghost-overlay {
+position: fixed;
+inset: 0;
+z-index: 203;
+display: none;
+pointer-events: none;
+background: rgba(255,255,255,0.035);
+}
+
+#ghost-shape {
+position: absolute;
+inset: 0;
+filter: blur(10px);
+}
 </style>
 </head>
 <body>
