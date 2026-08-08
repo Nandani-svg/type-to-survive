@@ -140,6 +140,106 @@ position: absolute;
 inset: 0;
 filter: blur(10px);
 }
+
+
+#mute-btn {
+position: fixed;
+bottom: 18px;
+right: 18px;
+z-index: 60;
+background: none;
+border: 1px solid rgba(109,133,127,0.22);
+color: rgba(109,133,127,0.38);
+font-family: 'Share Tech Mono', monospace;
+font-size: 11px;
+letter-spacing: 0.08em;
+padding: 4px 9px;
+cursor: pointer;
+transition: border-color 0.2s, color 0.2s;
+}
+
+#mute-btn:hover { border-color: rgba(109,133,127,0.55); color: rgba(109,133,127,0.65); }
+#mute-btn.muted { color: rgba(109,133,127,0.18); border-color: rgba(109,133,127,0.1); }
+
+#hud {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 30;
+padding: 14px 18px 0;
+display: flex;
+align-items: center;
+}
+
+#rec-group {
+display: flex;
+align-items: center;
+gap: 7px;
+margin-right: auto;
+}
+
+#rec-dot {
+width: 8px; height: 8px;
+border-radius: 50%;
+background: #cc2222;
+flex-shrink: 0;
+}
+
+#rec-dot.blink { background: transparent; }
+
+#timestamp {
+font-size: 12px;
+color: var(--dim);
+letter-spacing: 0.06em;
+}
+
+#signal-bar {
+width: 140px;
+height: 3px;
+background: rgba(255,255,255,0.08);
+}
+
+#signal-fill {
+height: 100%;
+width: 100%;
+background: #00eeff;
+transition: width 0.12s linear, background 0.4s ease;
+}
+
+#hud-right{
+display: flex;
+align-items: center;
+gap: 14px
+}
+
+#diff-label {
+font-size: 11px;
+color: var(--dim);
+letter-spacing: 0.18em;
+opacity: 0.5;
+}
+
+#score-display {
+font-size: 13px;
+color: var(--dim);
+letter-spacing: 0.1em;
+min-width: 40px;
+text-align: right;
+}
+
+#word-timer-wrap {
+position: fixed;
+bottom: 0, left: 0; right: 0;
+height: 2px;
+z-index: 30;
+background: rgba(255,255,255,0.05);
+}
+
+#word-timer-fill {
+height: 100%;
+width: 100%;
+background: var(--dim);
+transition: background 0.3s;
+}
 </style>
 </head>
 <body>
