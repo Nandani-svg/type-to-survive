@@ -524,6 +524,32 @@ left: -9999px;
 opacity: 0;
 pointer-events: none;
 }
+
+@keyframes  wordAppear {
+from { opacity: 0; letter-spacing: 0.3em; }
+to { opacity: 1; letter-spacing: 0.08em; }
+}
+
+#word-display.flash { animation: wordAppear 0.18s ease-out forwards; }
+
+@keyframes  mistakePulse {
+0% { opacity: 1; }
+20% { opacity: 0.3; }
+100% { opacity: 1; }
+}
+
+#word-display.mistake { animation: mistakePulse 0.25s ease-out; }
+
+#gameover-screen .glitch-title { margin-bottom: 12px; }
+
+#final-score {
+font-size: 13px;
+color: var(--dim);
+letter-spacing: 0.18em;
+margin-bottom: 44px;
+text-align: center;
+line-height: 2;
+}
 </style>
 </head>
 <body>
