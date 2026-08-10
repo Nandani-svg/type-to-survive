@@ -228,7 +228,7 @@ text-align: right;
 
 #word-timer-wrap {
 position: fixed;
-bottom: 0, left: 0; right: 0;
+bottom: 0; left: 0; right: 0;
 height: 2px;
 z-index: 30;
 background: rgba(255,255,255,0.05);
@@ -412,6 +412,116 @@ rgba(109,133,127,0.07) 25%,
 rgba(109,133,127,0.05) 60%,
 transparent 100%
 );
+pointer-events: none;
+}
+
+
+#diff-picker {
+display: flex;
+gap: 6px;
+margin-bottom: 22px;
+align-items: center;
+}
+
+#diff-label-txt {
+font-size: 10px;
+color: var(--dim);
+letter-spacing: 0.16em;
+opacity: 0.4;
+margin-right: 6px;
+text-transform: uppercase;
+}
+
+.diff-btn {
+background: none;
+border: 1px solid rgba(109,133,127,0.3);
+color: rgba(109,133,127,0.45);
+font-family: 'Share Tech Mono', monospace;
+font-size: 10px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+padding: 5px 13px;
+cursor: pointer;
+transition: border-color 0.15s, color 0.15s;
+}
+
+.diff-btn:hover { border-color: var(--dim); color: var(--dim); }
+.diff-btn.selected { border-color: var(--dim); color: var(--white); }
+
+
+#start-btn {
+background: none;
+border: 1px solid var(--white);
+color: var(--white);
+font-family: 'Share Tech Mono', monospace;
+font-size: 13px;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+padding: 14px 0;
+width: 100%;
+max-width: 420px;
+cursor: pointer;
+transition: background 0.18s;
+text-align: center;
+}
+
+#start-btn:hover { background: rgba(217,246,239,0.04); }
+
+.btn {
+background: none;
+border: 1px solid var(--dim);
+color: var(--white);
+font-family: 'Share Tech Mono', monospace;
+font-size: 13px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+padding: 10px 28px;
+cursor: pointer;
+transition: border-color 0.2s;
+}
+
+.btn:hover { border-color: var(--white); }
+
+#game-screen { z-index: 40; }
+
+#word-display {
+position: relative;
+display: inline-block;
+font-size: clamp(36px, 7vw, 72px);
+letter-spacing: 0.08em;
+text-transform: uppercase;
+color: var(--white);
+margin-bottom: 36px;
+min-height: 1.2em;
+text-align: center;
+}
+
+#word-display::before,
+#word-display::after {
+content: attr(data-word);
+position: absolute;
+inset: 0;
+text-align: center;
+}
+
+#word-display::before { color: cyan; }
+#word-display::after { color: red; }
+
+#typed-display {
+font-size: 18px;
+letter-spacing: 0.18em;
+color: var(--dim);
+min-height: 1.4em;
+text-align: center;
+}
+
+#typed-display .correct { color: var(--white); }
+#typed-display .wrong { color: #cc2222; }
+
+#hidden-input {
+position: fixed;
+left: -9999px;
+opacity: 0;
 pointer-events: none;
 }
 </style>
