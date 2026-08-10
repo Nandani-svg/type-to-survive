@@ -619,6 +619,7 @@ line-height: 2;
 <div class="glitch-title" data-text="NO SIGNAL">NO SIGNAL</div>
 <div id="final-score"></div>
 <div style="display:flex;gap:14px">
+<button class="btn" id="retry-btn">RECONNECT</button>
 <button class="btn" id="menu-btn">MENU</button>
 </div>
 </div>
@@ -629,6 +630,47 @@ line-height: 2;
 <style id="ca-style"></style>
 
 <script>
+const WORDS = [
+"static","signal","noise","bleed","void","frequency","cut","dark",
+"ghost","feed","dead","air","cold","flicker","black",
+"interference","corrupt","broadcast","disrupt","decay","hollow",
+"absent","null","broken","severed","fragment","loop","fall","trace",
+"drift","pulse","tear","veil","lost","fade","sink","deep",
+"crawl","watch","burn","still","wrong","wither","pull",
+"shadow","creak","gone","below","dread","bare","scratch","cling",
+"empty","stare","stand","moan","seep","hide","hunt","reach",
+"vessel","unlit","stifle","descend","wander","wane","hollow"
+];
+
+const DIFFICULTY = {
+easy: {
+label: 'EASY',
+wordBase: 4200, wordMin: 2800,
+passiveDecay: 0.009,
+missSignal: 0.08, typoSignal: 0.04, backspaceHit: 0.008,
+boostBase: 0.06, boostTime: 0.14,
+scoreBase: 10, scoreTime: 20,
+critThreshold: 0.18,
+},
+normal: {
+label: 'NORMAL',
+wordBase: 3500, wordMin: 2200,
+passiveDecay: 0.014,
+missSignal: 0.12, typoSignal: 0.06, backspaceHit: 0.015,
+boostBase: 0.04, boostTime: 0.10,
+scoreBase: 10, scoreTime: 20,
+critThreshold: 0.20,
+},
+hard: {
+label: 'HARD',
+wordBase: 2600, wordMin: 1500,
+passiveDecay: 0.022,
+missSignal: 0.18, typoSignal: 0.09, backspaceHit: 0.025,
+boostBase: 0.025, boostTime: 0.07,
+scoreBase: 15, scoreTime: 30,
+critThreshold: 0.22,
+},
+};
 </script>
 </body>
 </html>
