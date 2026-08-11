@@ -1083,6 +1083,7 @@ running = false;
 clearInterval(noiseTimer);
 clearInterval(glitchTimer);
 clearInterval(ghostTimer);
+clearInterval(mpTimer);
 
 el.hud.classList.add('hidden');
 el.timerWrap.classList.add('hidden');
@@ -1145,7 +1146,7 @@ requestAnimationFrame(tick);
 function startGame() {
 Snd.init();
 signal = 1; score = 0; elapsed = 0; currentWord = null; lastAudioTick = 0;
-critFired = false; critFiredTime = 0; ghostFired = false;
+critFired = false; critFiredTime = 0; ghostFired = false; lastMpTime = -999;
 
 el.titleScr.classList.add('hidden');
 el.overScr.classList.add('hidden');
@@ -1171,6 +1172,7 @@ running = true;
 noiseTimer = setInterval(() => { if (running) renderNoise(1 - signal); }, 70);
 glitchTimer = setInterval(() => { if (running) renderGlitch(1 - signal); }, 130);
 startGhostWatch();
+startMp3Watch();
 
 lastTick = performance.now();
 requestAnimationFrame(tick);
