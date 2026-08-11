@@ -53,7 +53,7 @@ transparent 2px,
 rgba(0,0,0,0.18) 2px,
 rgba(0,0,0,0.18) 4px
 );
-animation: scabDrift 8s linear infinite;
+animation: scanDrift 8s linear infinite;
 opacity: 0.5;
 }
 
@@ -307,9 +307,9 @@ margin-right: auto;
 }
 
 #th-sig {
-height: 100%;
-width: 100%;
-background: rgba(0,220,255,0.45);
+height: 3px;
+width: 100px;
+background: rgba(255,255,255,0.08);
 }
 
 #th-sig-fill {
@@ -577,7 +577,7 @@ line-height: 2;
 <div id="rec-dot"></div>
 <span id="timestamp">00:00</span>
 </div>
-<div id="signal-bar"></div id="signal-fill"></div></div>
+<div id="signal-bar"><div id="signal-fill"></div></div>
 <div id="hud-right">
 <div id="diff-label"></div>
 <div id="score-display">0</div>
@@ -592,7 +592,7 @@ line-height: 2;
 <div id="title-header">
 <div id="th-dot"></div>
 <span id="th-label">STANDBY</span>
-<div id="th-sig"></div id="th-sig-fill"></div></div>
+<div id="th-sig"><div id="th-sig-fill"></div></div>
 </div>
 <div class="glitch-title" data-text="TYPE TO SURVIVE">TYPE TO SURVIVE</div>
 <div class="subtitle">type before the signal dies</div>
@@ -696,7 +696,7 @@ o.type = 'sawtooth';
 o.frequency.value = freq;
 o.connect(droneFilt);
 o.start();
-drone.push(o);
+drones.push(o);
 });
 droneFilt.connect(droneGain);
 droneGain.connect(master);
