@@ -930,6 +930,85 @@ el.sigFill.style.width = Math.max(0, signal * 100) + '%';
 el.sigFill.style.background = signalColor(signal);
 el.scoreDisp.textContent = score;
 }
+
+function jumpscare(variant, callback) {
+Snd.stinger(variant);
+const js = el.jumpscare;
+js.style.display = 'flex';
+
+if (variant === 'critical') {
+js.style.background = 'rgba(255,255,255,0.92)';
+el.jsShape.style.transform = 'translateX(-50%) scaleY(1.4) scaleX(1.1)';
+} else {
+js.style.background = '#fff';
+el.jsShape.style.transform = 'translateX(-50%) scaleY(2.2) scaleX(1.6)';
+}
+
+renderNoise(0.9);
+renderGlitch(1.0);
+
+const snapDelay = variant === 'death' ? 160 : 120;
+setTimeout(() => {
+js.style.background = variant === 'death' ? '#000' : 'rgba(255,255,255,0.18)';
+el.jsShape.style.transform =  'translateX(-50%) scaleY(1) scaleX(1)';
+}, snapDelay);
+
+const totalDelay = variant === 'death' ? 900 : 180;
+setTimeout(() => {
+if (variant != 'death') {
+js.style.display = 'none';
+noiseCtx.clearRect(0, 0, noiseCanvas.width, noiseCanvas.height);
+glitchCtx.clearRect(0, 0, glitchCanvas.width, glitchCanvas.height);
+}
+if (callback) callback();
+}, totalDelay);
+}
+
+
+const GHOST_CORNERS = [
+{ grad: 'radial-gradient(ellipse 55% 80% at 2% 2%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 28%, transparent 65%)',   skew: 'skewX(6deg)  scaleY(1.3)' },
+{  grad: 'radial-gradient(ellipse 55% 80% at 98% 2%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 28%, transparent 65%)',  skew: 'skewX(-6deg) scaleY(1.3)' },
+{ grad: 'radial-gradient(ellipse 80% 55% at 2% 98%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 28%, transparent 65%)',  skew: 'skewY(-5deg) scaleX(1.2)' },
+{ grad: 'radial-gradient(ellipse 55% 80% at 98% 55%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 28%, transparent 65%)', skew: 'skewX(-7deg) scaleY(1.35)'},
+];
+
+function triggerGhostScare() {
+Snd.stinger('ghost');
+const c = GHOST_CORNERS[Math.floor(Math.random() * GHOST_CORNERS.length)];
+el.ghostShape.style.background = c.grad;
+el.ghostShape.style.transform = c.skew;
+el.ghostOv.style.background = 'rgba(255,255,255,0.55)';
+el.ghostOv.style.display = 'block';
+renderNoise(0.8);
+renderGlitch(0.9);
+setTimeout(() => { el.ghostOv.style.background = 'transparent'; }, 80);
+setTimeout(() => {
+el.ghostOv.style.display = 'none';
+noiseCtx.clearRect(0, 0, noiseCanvas.width, noiseCanvas.height);
+glitchCtx.clearRect(0, 0, glitchCanvas.width, glitchCanvas.height);
+}, 140);
+}
+
+function startGhostWatch() {
+ghostTimer = setInterval(() => {
+if (!running || ghostFired)  { clearInterval(ghostTimer); return; }
+if (elapsed < 6) return;
+if (critFired && (elapsed - critFiredTime) < 5) return;
+if (Math.random() < 0.15) {
+ghostFired = true;
+clearInterval(ghostTimer);
+triggerGhostScare();
+}
+}, 2000);
+}
+
+function checkCritical() {
+if (!critFired && signal < diff.critThreshold) {
+critFired = true;
+critFiredTime = elapsed;
+jumpscare('critical', null);
+}
+}
 </script>
 </body>
 </html>
