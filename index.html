@@ -810,6 +810,126 @@ return muted;
 
 return  { init, update, stinger, blip, toggleMute, isMuted: () => muted };
 })();
+
+let diff = DIFFICULTY.normal;
+let signal, score, elapsed, currentWord, wordDeadline, wordDuration;
+let running = false, lastTick, lastAudioTick = 0;
+let noiseTimer, glitchTimer, ghostTimer;
+let critFired = false, critFiredTime = 0;
+let ghostFired = false;
+
+
+const noiseCanvas = document.getElementById('noise');
+const glitchCanvas = document.getElementById('glitch');
+const noiseCtx = noiseCanvas.getContext('2d');
+const glitchCtx = glitchCanvas.getContext('2d');
+
+const el = {
+hud: document.getElementById('hud'),
+recDot: document.getElementById('rec-dot'),
+ts: document.getElementById('timestamp'),
+sigFill: document.getElementById('signal-fill'),
+scoreDisp: document.getElementById('score-display'),
+diffLabel: document.getElementById('diff-label'),
+timerWrap: document.getElementById('word-timer-wrap'),
+timerFill: document.getElementById('word-timer-fill'),
+presence: document.getElementById('presence'),
+jumpscare: document.getElementById('jumpscare'),
+jsShape: document.getElementById('jumpscare-shape'),
+ghostOv: document.getElementById('ghost-overlay'),
+ghostShape: document.getElementById('ghost-shape'),
+muteBtn:  document.getElementById('mute-btn'),
+titleScr: document.getElementById('title-screen'),
+gameScr: document.getElementById('game-screen'),
+overScr: document.getElementById('gameover-screen'),
+word: document.getElementById('word-display'),
+typed: document.getElementById('typed-display'),
+input: document.getElementById('hidden-input'),
+finalTxt: document.getElementById('final-score'),
+startBtn: document.getElementById('start-btn'),
+retryBtn: document.getElementById('retry-btn'),
+caStyle: document.getElementById('ca-style'),
+diffBtns: document.querySelectorAll('.diff-btn'),
+};
+
+
+function resize() {
+noiseCanvas.width = glitchCanvas.width = window.innerHeight;
+noiseCanvas.height = glitchCanvas.height = window.innerHeight;
+}
+
+function renderNoise(intensity) {
+const w = noiseCanvas.width, h = noiseCanvas.height;
+const img = noiseCtx.createImageData(w, h);
+const d = img.data;
+for (let i = 0; i < d.length; i += 4) {
+const lit = Math.random() < intensity;
+const v = lit ? (Math.random() * 255 | 0) : 0;
+d[i] = d[i+1] = d[i+2] = v;
+d[i+3] = lit ? 180 : 0;
+}
+noiseCtx.putImageData(img, 0, 0);
+}
+
+function renderGlitch(intensity){
+glitchCtx.clearRect(0, 0, glitchCanvas.width, glitchCanvas.height);
+if (Math.random() > intensity * 0.75) return;
+const bars = Math.ceil(intensity * 5);
+for(let i = 0; i < bars; i++) {
+const y = Math.random() * glitchCanvas.height;
+const bh = 1 + Math.random() * 6 * intensity;
+const shift = (Math.random() - 0.5) * 60 * intensity;
+glitchCtx.fillStyle = `rgba(217,246,239,${0.05 + Math.random() * 0.08 * intensity})`;
+glitchCtx.fillRect(shift, y, glitchCanvas.width, bh);
+}
+}
+
+function setAmbient(degradation) {
+noiseCanvas.style.opacity = 0.02 + degradation * 0.10;
+const sl = document.getElementById('scanlines');
+sl.style.animationDuration = (8 - degradation * 5) + 's';
+sl.style.opacity = 0.3 + degradation * 0.5;
+}
+
+
+function updatePresence(sig) {
+const t = 1 - sig;
+el.presence.style.opacity = Math.max(0, t * 0.95 - 0.05);
+el.presence.style.transform = `translateX(-50%) scaleX(${1.4 + t}) scaleY(${1 + t * 0.6})`;
+}
+
+function pulsePresence() {
+const t = 1 - signal;
+el.presence.style.transition = 'opacity 0.12s ease, transform 0.12s ease';
+el.presence.style.opacity = Math.min(1, (t + 0.18) * 0.95);
+el.presence.style.transform = `translateX(-50%) scaleX(${1.6 + t}) scaleY(${1.3 + t * 0.6})`;
+setTimeout(() => {
+el.presence.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+updatePresence(signal);
+}, 300);
+}
+
+
+function setAberration(sig) {
+const spread = sig > 0.5 ? 1 : Math.round(1 + (1 - sig * 2) * 5);
+el.caStyle.textContent =
+`#word-display::before{transform:translateX(-${spread}px);}` +
+`#word-display::after{transform:translateX(${spread}px);}`;
+}
+
+function signalColor(sig) {
+if (sig > 0.5) {
+const t =  (sig - 0.5) * 2;
+return  `rgb(${Math.round(255*(1-t))},${Math.round(200+55*t)},255)`;
+}
+return `rgb(255,${Math.round(140 * sig * 2)},0)`;
+}
+
+function updateHUD() {
+el.sigFill.style.width = Math.max(0, signal * 100) + '%';
+el.sigFill.style.background = signalColor(signal);
+el.scoreDisp.textContent = score;
+}
 </script>
 </body>
 </html>
