@@ -1132,6 +1132,83 @@ startGhostWatch();
 lastTick = performance.now();
 requestAnimationFrame(tick);
 }
+
+el.input.addEventListener('input', () => {
+if (!running) return;
+const typed = el.input.value;
+const word = currentWord;
+
+let html = '';
+for (let i = 0; i < typed.length; i++) {
+const cls = typed[i] === word[i] ? 'correct' : 'wrong';
+html += `<span class="${cls}">${typed[i]}</span>`;
+}
+el.typed.innerHTML = html;
+
+const latest = typed[typed.length - 1];
+const expected = word[typed.length - 1];
+if (latest && latest !== expected) {
+signal = Math.max(0, signal - diff.typoSignal);
+pulsePresence();
+el.word.classList.add('mistake');
+setTimeout(() => el.word.classList.remove('mistake'), 250);
+checkCritical();
+updateHUD();
+Snd.blip('err');
+}
+
+if (typed.toLowerCase() === word.toLowerCase()) {
+const  remaining = (wordDeadline - performance.now()) / wordDuration;
+signal = Math.min(1, signal + diff.boostBase + remaining * diff.boostTime);
+score += Math.round(diff.scoreBase + remaining * diff.scoreTime);
+updateHUD();
+Snd.blip('ok');
+nextWord();
+}
+});
+
+el.input.addEventListener('keydown', e => {
+if (!running) return;
+if (e.key === 'Backspace') { signal = Math.max(0, signal - diff.backspaceHit); updateHUD(); }
+});
+
+document.addEventListener('keydown', () => { if (running) el.input.focus(); });
+document.addEventListener('click',   () => { if (running) el.input.focus(); });
+
+el.diffBtns.forEach(btn => btn.addEventListener('click', () => {
+el.diffBtns.forEach(b => b.classList.remove('selected'));
+btn.classList.add('selected');
+diff = DIFFICULTY[btn.dataset.diff];
+}));
+
+el.startBtn.addEventListener('click', startGame);
+el.retryBtn.addEventListener('click', startGame);
+
+document.getElementById('menu-btn').addEventListener('click', () => {
+el.overScr.classList.add('hidden');
+el.titleScr.classList.remove('hidden');
+el.presence.style.transition = 'opacity 1.2s ease';
+el.presence.style.left = '66%';
+el.presence.style.opacity = '0.07';
+elpresence.style.transform = 'translateX(-50%) scaleX(1.5) scaleY(1.0)';
+});
+
+el.muteBtn.addEventListener('click', () => {
+Snd.init();
+const nowMuted = Snd.toggleMute();
+el.muteBtn.textContent = nowMuted ? '○' : '◈';
+el.muteBtn.classList.toggle('muted', nowMuted);
+});
+
+window.addEventListener('resize', resize);
+resize();
+
+el.presence.style.left  = '66%';
+el.presence.style.opacity = '0.07';
+el.presence.style.transform = 'translateX(-50%) scaleX(1.5) scaleY(1.0)';
+
+renderNoise(0.025);
+setInterval(() => { if (!running) renderNoise(0.025); }, 300);
 </script>
 </body>
 </html>
