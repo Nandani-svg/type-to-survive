@@ -854,7 +854,7 @@ diffBtns: document.querySelectorAll('.diff-btn'),
 
 
 function resize() {
-noiseCanvas.width = glitchCanvas.width = window.innerHeight;
+noiseCanvas.width = glitchCanvas.width = window.innerWidth;
 noiseCanvas.height = glitchCanvas.height = window.innerHeight;
 }
 
@@ -1115,7 +1115,7 @@ el.diffLabel.textContent = diff.label;
 
 el.presence.style.left = '50%';
 el.presence.style.transition = 'none';
-updatePresence();
+updatePresence(signal);
 updateHUD();
 setAmbient(0);
 setAberration(1);
@@ -1190,7 +1190,7 @@ el.titleScr.classList.remove('hidden');
 el.presence.style.transition = 'opacity 1.2s ease';
 el.presence.style.left = '66%';
 el.presence.style.opacity = '0.07';
-elpresence.style.transform = 'translateX(-50%) scaleX(1.5) scaleY(1.0)';
+el.presence.style.transform = 'translateX(-50%) scaleX(1.5) scaleY(1.0)';
 });
 
 el.muteBtn.addEventListener('click', () => {
