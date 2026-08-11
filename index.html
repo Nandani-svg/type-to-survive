@@ -1009,6 +1009,129 @@ critFiredTime = elapsed;
 jumpscare('critical', null);
 }
 }
+
+function fmt(s) {
+return String(Math.floor(s/60)|0).padStart(2,'0') + ':' + String(s%60|0).padStart(2,'0');
+}
+
+function pickWord() {
+const pool = WORDS.filter(w => w !== currentWord);
+return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function nextWord() {
+currentWord = pickWord();
+const ramp = Math.min(score / 200, 1);
+wordDuration = diff.wordBase - ramp * (diff.wordBase - diff.wordMin);
+wordDeadline = performance.now() + wordDuration;
+
+el.word.className = 'flash';
+el.word.textContent = currentWord.toUpperCase();
+el.word.dataset.word = currentWord.toUpperCase();
+setTimeout(() => { el.word.className = ''; }, 300);
+
+el.typed.innerHTML = '';
+el.input.value = '';
+setAberration(signal);
+}
+
+function endGame() {
+running = false;
+clearInterval(noiseTimer);
+clearInterval(glitchTimer);
+clearInterval(ghostTimer);
+
+el.hud.classList.add('hidden');
+el.timerWrap.classList.add('hidden');
+el.gameScr.classList.add('hidden');
+
+el.finalTxt.innerHTML =
+`score: ${score}&nbsp;&nbsp;|&nbsp;&nbsp;time: ${fmt(elapsed)}<br>` +
+`<span style="font-size:11px;letter-spacing:0.22em;opacity:0.45">${diff.label}</span>`;
+
+jumpscare('death', () => {
+el.jumpscare.style.display = 'none';
+el.overScr.classList.remove('hidden');
+setTimeout(() => Snd.update(1), 600);
+
+let blinks = 0;
+const blink = setInterval(() => {
+el.recDot.classList.toggle('blink');
+if  (++blinks >= 8) { clearInterval(blink); el.recDot.classList.remove('blink'); }
+}, 80);
+});
+}
+
+function tick(now) {
+if(!running) return;
+
+const dt = (now - lastTick) / 1000;
+lastTick = now;
+elapsed += dt;
+
+el.ts.textContent = fmt(elapsed);
+signal = Math.max(0, signal - diff.passiveDecay * dt);
+
+if (now - lastAudioTick > 180) {
+Snd.update(signal);
+lastAudioTick = now;
+}
+
+const wordPct = Math.max(0, (wordDeadline - now) / wordDuration);
+el.timerFill.style.width = (wordPct * 100) + '%';
+el.timerFill.style.background = wordPct < 0.3 ? '#cc2222' : wordPct < 0.6 ? '#ff8800' : 'var(--dim)';
+
+if (wordPct <= 0) {
+signal = Math.max(0, signal - diff.missSignal);
+pulsePresence();
+el.word.classList.add('mistake');
+setTimeout(() => el.word.classList.remove('mistake'), 250);
+nextWord();
+}
+
+checkCritical();
+updateHUD();
+updatePresence(signal);
+setAmbient(1 - signal);
+setAberration(signal);
+
+if (signal <= 0) { endGame(); return; }
+requestAnimationFrame(tick);
+}
+
+function startGame() {
+Snd.init();
+signal = 1; score = 0; elapsed = 0; currentWord = null; lastAudioTick = 0;
+critFired = false; critFiredTime = 0; ghostFired = false;
+
+el.titleScr.classList.add('hidden');
+el.overScr.classList.add('hidden');
+el.jumpscare.style.display = 'none';
+el.ghostOv.style.display = 'none';
+el.gameScr.classList.remove('hidden');
+el.hud.classList.remove('hidden');
+el.timerWrap.classList.remove('hidden');
+el.diffLabel.textContent = diff.label;
+
+el.presence.style.left = '50%';
+el.presence.style.transition = 'none';
+updatePresence();
+updateHUD();
+setAmbient(0);
+setAberration(1);
+Snd.update(1);
+nextWord();
+
+el.input.focus();
+running = true;
+
+noiseTimer = setInterval(() => { if (running) renderNoise(1 - signal); }, 70);
+glitchTimer = setInterval(() => { if (running) renderGlitch(1 - signal); }, 130);
+startGhostWatch();
+
+lastTick = performance.now();
+requestAnimationFrame(tick);
+}
 </script>
 </body>
 </html>
