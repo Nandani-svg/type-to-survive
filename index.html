@@ -814,9 +814,10 @@ return  { init, update, stinger, blip, toggleMute, isMuted: () => muted };
 let diff = DIFFICULTY.normal;
 let signal, score, elapsed, currentWord, wordDeadline, wordDuration;
 let running = false, lastTick, lastAudioTick = 0;
-let noiseTimer, glitchTimer, ghostTimer;
+let noiseTimer, glitchTimer, ghostTimer, mpTimer;
 let critFired = false, critFiredTime = 0;
 let ghostFired = false;
+let lastMpTime = -999;
 
 
 const noiseCanvas = document.getElementById('noise');
@@ -1000,6 +1001,48 @@ clearInterval(ghostTimer);
 triggerGhostScare();
 }
 }, 2000);
+}
+const MP3_FILES = [
+'freesound_community-tension-2-104833.mp3',
+'jeremayjimenez-smile-dog-jumpscare-167171.mp3',
+'sound_effects75-eyesaur-jumpscare-sound-482110.mp3'
+];
+const mp3Pool = MP3_FILES.map(src => {
+const a = new Audio(src);
+a.preload = 'auto';
+return a;
+});
+
+function triggerMp3Scare() {
+
+const clip = mp3Pool[Math.floor(Math.random() * mp3Pool.length)];
+
+clip.volume = Snd.isMuted() ? 0 : 1;
+
+clip.currentTime = 0;
+clip.play().catch(() => {});
+
+renderNoise(0.85);
+renderGlitch(0.95);
+setTimeout(() => {
+noiseCtx.clearRect(0, 0, noiseCanvas.width, noiseCanvas.height);
+glitchCtx.clearRect(0, 0, glitchCanvas.width, glitchCanvas.height);
+}, 160);
+}
+
+function startMp3Watch() {
+
+lastMpTime = -999;
+mpTimer = setInterval(() => {
+if (!running) { clearInterval(mpTimer); return; }
+if (elapsed < 10) return;
+if (elapsed - lastMpTime < 25) return;
+if (critFired && (elapsed - critFiredTime) < 6) return;
+if (Math.random() < 0.14) {
+lastMpTime = elapsed;
+triggerMp3Scare();
+}
+}, 4000);
 }
 
 function checkCritical() {
