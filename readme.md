@@ -21,7 +21,7 @@ Its typing. But make it scary + A lil thrill
 **Easiest way — just open it:**
 
 1. Clone this repo
-2. Open `index.html` in any modern browser 
+2. Open `index.html` in any browser 
 3. Pick your difficulty, hit **TRANSMIT**, and start typing
 
 Thats it. No server, no npm install, no build step. Just one single HTML file 
