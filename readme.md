@@ -53,7 +53,7 @@ I was thinking about game idead then i remebered a cartoon which had this kind o
 
 ## Difficulty
 
-| Easy | Slow for people who are afraid of thrill and speed |
-| Normal | Normal for people who thinks they can handle it |
-| Hard | Fast for people who are "THE ONE" who can handle it |
+Easy  - Slow for people who are afraid of thrill and speed 
+Normal| - Normal for people who thinks they can handle it 
+Hard - Fast for people who are "THE ONE" who can handle it 
 ---
