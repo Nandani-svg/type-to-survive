@@ -26,10 +26,10 @@ Its typing. But make it scary + A lil thrill
 
 Thats it. No server, no npm install, no build step. Just one single HTML file 
 
-> ⚠️ MAKE SURE YOUR IS VOLUME UPPP OR PERSON WHO LIVES UNDER YOUR BED KNOWS WHAT KIND OF PERSON YOU ARE
+> *WARNING!!* MAKE SURE YOUR IS VOLUME UPPP OR PERSON WHO LIVES UNDER YOUR BED KNOWS WHAT KIND OF PERSON YOU ARE
 
 **Live version** (better dont need to do the clone bullsh*t)
-👉 https://vividhues.itch.io/typetosurvive
+https://vividhues.itch.io/typetosurvive
 
 ---
 
